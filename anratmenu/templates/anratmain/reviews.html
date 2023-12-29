@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p><h1>{{ title }}</h1> <a class="review_form_link" href="{% url 'review_form' %}">Оставить отзыв</a></p>
+<ul>
+    {% for review in reviews %}
+        <li><div class="article-panel">
+            <p class="first">Добавлен: {{review.datetime|date:"d.m.Y   в H:i"}}</p>
+        </div>
+            <h2>{{ review.name }}</h2>
+            {% if review.photo %}
+            <img class="img-review" src="{{ review.photo.url }}">
+            {% endif %}
+            {% autoescape off %}
+                <p>{{ review.text|linebreaks }}</p>
+            {% endautoescape %}
+            <a href="{% url 'edit_review' review.pk %}">Редактировать</a>
+            <a href="{% url 'delete_review' review.pk %}">Удалить</a>
+            {% if not forloop.last %}
+            <hr>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

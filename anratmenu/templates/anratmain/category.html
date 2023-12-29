@@ -1,0 +1,24 @@
+{% extends 'anratmain/menu_bar.html' %}
+
+{% block assortiment_category %}
+<h1 align="center">{{ title }}</h1>
+    {% for item in category_items %}
+        {% if item.is_published %}
+                <div class="item-text">
+                <h2>{{ item.title }}</h2>
+                    {% if item.photo %}
+                        <p><img class="img-article-left-m" src="{{ item.photo }}"></p>
+                    {% endif %}
+                {% autoescape off %}
+                <p>{{ item.content|linebreaks|truncatewords:20 }}</p>
+                {% endautoescape %}
+                    <div class="clear"></div>
+                <p class="item-price">{{ item.price }} &#8381</p>
+                <p class="link-read-post"><a href="{{ item.get_absolute_url }}">Читать</a></p>
+                {% if not forloop.last %}
+                  <hr>
+                {% endif %}
+                </div>
+        {% endif %}
+    {% endfor %}
+{% endblock assortiment_category %}

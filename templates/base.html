@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>{{ title|default:"AnRat Bar" }}</title>
+    <link type="text/css" href="{% static 'anratmenu/css/styles.css' %}" rel="stylesheet" >
+    <link rel="icon" href="{% static 'anratmenu/images/main.ico' %}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<table class="table-page" border="0" cellpadding="0" cellspacing="0">
+<tr><td valign="top">
+    {% block mainmenu %}
+    <div class="header">
+        <ul id="mainmenu" class="mainmenu">
+            <li class="logo"><a href="{% url 'home' %}"><img src="{% static 'anratmenu/images/logo.png' %}" class="logo"/></a></li>
+    {% for m in menu %}
+        {% if not forloop.last %}<li>{% else %}<li class="last">{% endif%}
+            <a href="{% url m.url_name %}">{{ m.title }}</a>
+        </li>
+    {% endfor %}
+            </ul>
+        <div class="clear"></div>
+    </div>
+    {% endblock mainmenu %}
+
+    <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td valign="top" class="content-td">
+            <div class="content-text">
+                {% block content %}
+                {% endblock %}
+                {% block navigation %}
+                    {% if page_obj.has_other_pages %}
+                        <nav class="list-pages">
+                        <ul>
+                            {% if page_obj.has_previous %}
+                            <li class="page-num">
+                                <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+                            </li>
+                            {% endif %}
+
+                            {% for p in paginator.page_range %}
+                            {% if page_obj.number == p %}
+                            <li class="page-num page-num-selected">{{ p }}</li>
+                            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                                <li class="page-num">
+                                    <a href="?page={{ p }}">{{ p }}</a>
+                                </li>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-num">
+                                <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+                            </li>
+                            {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                {% endblock %}
+                {% block right_chapters %}
+                {% endblock %}
+            </div>
+            </td>
+        </tr>
+    </table>
+    <tr>
+    <td valign="bottom" class="footer">
+                <ul id="footer-ul">
+                    <li class="share">
+                        <a class="tg_developer" href="https://t.me/Fomushken" target="_blank" rel="nofollow"><img src="{% static 'anratmenu/images/tg_logo.png' %}"></a>
+                    </li>
+                </ul>
+</td></tr>
+</table>
+</body>
+</html>
