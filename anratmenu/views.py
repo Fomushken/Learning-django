@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
@@ -9,6 +11,7 @@ from anratmenu.models import Coffee, Admins, Review, TagDrink
 from anratmenu.utils import DataMixin
 
 
+@login_required
 def menu_abt(request):
     items = Coffee.published.all()#.select_related('category')
     paginator = Paginator(items, 3)
@@ -108,11 +111,6 @@ class ShowContact(DataMixin, DetailView):
         return get_object_or_404(Admins.published, slug=self.kwargs[self.slug_url_kwarg])
 
 
-class AnratLogin(DataMixin, TemplateView):
-    template_name = 'anratmain/login.html'
-    title_page = 'Бар AnRat - Вход'
-
-
 def page_not_found(request, exception):
     print(request, exception)
     return HttpResponseNotFound("<h1 align='center'>К сожалению, страница не найдена</h1>"
@@ -129,13 +127,18 @@ class ShowReviews(DataMixin, ListView):
         return Review.published.all()
 
 
-class ReviewForm(DataMixin, CreateView):
+class ReviewForm(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddReviewForm
     # model = Review
     # fields = '__all__'
     template_name = 'anratmain/review_form.html'
     title_page = 'Бар AnRat - Оставить отзыв'
     success_url = reverse_lazy('reviews')  # Если убрать, то перенаправит на get_absolute_url у модели если есть
+    # login_url = '/admin/'
+    def form_valid(self, form):
+        w = form.save(commit=False)
+        w.author = self.request.user
+        return super().form_valid(form)
 
 
 class UpdateReview(DataMixin, UpdateView):

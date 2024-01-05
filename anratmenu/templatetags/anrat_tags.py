@@ -3,9 +3,14 @@ from django.db.models import Count
 
 import anratmenu.views as views
 from anratmenu.models import Categories, TagDrink
+from anratmenu.utils import menu
 
 register = template.Library()
 
+
+@register.simple_tag
+def get_menu():
+    return menu
 
 @register.inclusion_tag('anratmain/list_categories.html')
 def show_categories(cat_selected=0):

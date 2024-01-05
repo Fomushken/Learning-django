@@ -5,7 +5,8 @@
 <ul>
     {% for review in reviews %}
         <li><div class="article-panel">
-            <p class="first">Добавлен: {{review.datetime|date:"d.m.Y   в H:i"}}</p>
+            <p class="first">Добавлен: {{review.datetime|date:"d.m.Y   в H:i"}} | Автор:
+            {{ review.author.username|default:'неизвестен' }}</p>
         </div>
             <h2>{{ review.name }}</h2>
             {% if review.photo %}

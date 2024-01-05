@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
@@ -121,6 +122,8 @@ class Review(models.Model):
     datetime = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Дата и время написания')
     published = PublishedManager()
     objects = models.Manager()
+    author = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name='reviews', null=True,
+                               default=None)
 
     class Meta:
         verbose_name = 'Отзывы'

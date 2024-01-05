@@ -25,6 +25,7 @@ from anratmenu.views import page_not_found
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('', include('anratmenu.urls'), name='menu_app'),
+    path('users/', include('users.urls', namespace='users')),
     path("__debug__/", include("debug_toolbar.urls"))
 ]
 

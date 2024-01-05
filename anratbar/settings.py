@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'anratmenu.apps.AnratmenuConfig',
+    'users.apps.UsersConfig',
     'debug_toolbar'
 ]
 
@@ -71,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'users.context_processors.get_anrat_context'
             ],
         },
     },
@@ -136,3 +138,39 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'users:login'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'users.authentication.EmailAuthBackend'
+]
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Если включить - будет в консоль выводиться, если console поменять на smtp то будет отправляться на емэйл
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'skinner.fomin@yandex.ru'
+EMAIL_HOST_PASSWORD = "ukmuwijcvkgoxmxy"
+
+# EMAIL_USE_SSL = True
+EMAIL_USE_TLS = True
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
+
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'skinner.fomin@gmail.com'
+# EMAIL_HOST_PASSWORD = 'gifg dcvy udwy crgi'
+#
+# EMAIL_USE_SSL = True
+# # EMAIL_USE_TLS = True
+#
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# SERVER_EMAIL = EMAIL_HOST_USER
+# EMAIL_ADMIN = EMAIL_HOST_USER

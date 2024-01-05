@@ -11,7 +11,6 @@ urlpatterns = [
     path('menu/', views.MenuAnrat.as_view(), name='menu'),  # http://127.0.0.1:8000/
     path('about/', views.menu_abt, name='about'),
     path('contacts/', views.AnratContacts.as_view(), name='contact'),
-    path('login/', views.AnratLogin.as_view(), name='login'),
     path('contacts/<slug:post_slug>', views.ShowContact.as_view(), name='contacts'),
     path('menu/category/<slug:cat_slug>', views.ShowDrinksCategory.as_view(), name='category_by_slug'),
     path('menu/item/<slug:item_slug>', views.ShowItem.as_view(), name='show_item'),
